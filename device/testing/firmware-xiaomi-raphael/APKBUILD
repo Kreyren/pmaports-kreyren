@@ -19,8 +19,8 @@ url="https://github.com/dabao1955/pmos_firmware_xiaomi_raphael"
 license="proprietary"
 options="!check !strip !archcheck !tracedeps pmb:cross-native"
 _commit="45b6e993cf5d6fec447d924cf773783a8dbfb596"
-source=
-	"https://github.com/dabao1955/pmos_firmware_xiaomi_raphael/archive/$_commit.tar.gz
+source="
+	https://github.com/dabao1955/pmos_firmware_xiaomi_raphael/archive/$_commit.tar.gz
 	30-gpu-firmware.files
 	firmware-xiaomi-raphael.post-install
 	"
