@@ -99,8 +99,8 @@ venus() {
 wlan() {
 	pkgdesc="Xiaomi raphael wlan firmware"
 
-	cp "$builddir"/sm8150/raphael/wlan -r \
-		"$subpkgdir/lib/firmware/qcom/sm8150/raphael/"
+	install -Dm644 "$builddir"/sm8150/raphael/wlan/qca_cid/* -t \
+		"$subpkgdir/lib/firmware/qcom/sm8150/raphael/wlan/qca_cid/"
 }
 
 sha512sums="
