@@ -13,7 +13,6 @@ depends="
 	firmware-xiaomi-raphael
 	mkbootimg
 	linux-firmware-qcom
-	mesa-dri-gallium
 	postmarketos-base
 	mesa-vulkan-freedreno
 "
