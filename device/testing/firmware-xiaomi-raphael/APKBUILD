@@ -12,7 +12,6 @@ subpackages="
 	$pkgname-ipa
 	$pkgname-slpi
 	$pkgname-venus
-	$pkgname-wlan
 	"
 
 url="https://github.com/dabao1955/pmos_firmware_xiaomi_raphael"
@@ -94,13 +93,6 @@ venus() {
 
 	install -Dm644 "$builddir"/sm8150/raphael/venus.mbn -t \
 		"$subpkgdir/lib/firmware/qcom/sm8150/raphael/"
-}
-
-wlan() {
-	pkgdesc="Xiaomi raphael wlan firmware"
-
-	install -Dm644 "$builddir"/sm8150/raphael/wlan/qca_cid/* -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/raphael/wlan/qca_cid/"
 }
 
 sha512sums="
