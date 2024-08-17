@@ -1,0 +1,35 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-xiaomi-raphael
+pkgdesc="Xiaomi Redmi K20 Pro"
+pkgver=0.1
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+_carch="arm64"
+options="!check !archcheck"
+depends="
+	linux-xiaomi-raphael
+	firmware-xiaomi-raphael
+	mkbootimg
+	linux-firmware-qcom
+	mesa-dri-gallium
+	postmarketos-base
+	mesa-vulkan-freedreno
+"
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+6048f6863e1daa8e961755ca18a2692db0c66e1ac388f500251a997f7ebb591ba602f373b554582bd15b645c54527aa958e66a3fbf61e0d9e40b6f91ec59f4d5  deviceinfo
+"
