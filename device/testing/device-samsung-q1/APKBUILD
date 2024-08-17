@@ -1,0 +1,37 @@
+# Reference: <https://postmarketos.org/devicepkg>
+# Maintainer: Raymond Hackley <raymondhackley@protonmail.com>
+pkgname=device-samsung-q1
+pkgver=1
+pkgrel=0
+pkgdesc="Samsung Galaxy Note (GT-N7000)"
+url="https://postmarketos.org"
+arch="armv7"
+license="MIT"
+depends="
+	libsamsung-ipc
+	linux-postmarketos-exynos4
+	mesa-egl
+	postmarketos-base
+"
+makedepends="devicepkg-dev"
+options="!check !archcheck"
+subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
+source="deviceinfo"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="WiFi/BT firmware"
+	depends="firmware-samsung-q1-nvram linux-firmware-brcm"
+	mkdir "$subpkgdir"
+}
+
+sha512sums="
+393733fb520cf90a9ecc7a725333f48f8fdd7a505c710895b7430c31e140af384c81e3fa634cc76b935d2827283c8b1b49a3051c17e1eae999fd3d9b6e384891  deviceinfo
+"
