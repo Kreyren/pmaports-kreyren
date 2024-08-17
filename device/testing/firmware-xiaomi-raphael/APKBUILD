@@ -11,6 +11,7 @@ subpackages="
 	$pkgname-cdsp
 	$pkgname-ipa
 	$pkgname-slpi
+	$pkgname-touchscreen
 	$pkgname-venus
 	"
 
@@ -80,9 +81,8 @@ slpi() {
 	install -Dm644 "$builddir"/sm8150/raphael/slpi* -t \
 		"$subpkgdir/lib/firmware/qcom/sm8150/raphael/"
 }
-
-touch() {
-	pkgdesc="Xiaomi raphael venus firmware"
+touchscreen() {
+	pkgdesc="Xiaomi raphael touchscreen firmware"
 
 	install -Dm644 "$builddir"/sm8150/raphael/good* -t \
 		"$subpkgdir/lib/firmware/qcom/sm8150/raphael/"
