@@ -24,7 +24,7 @@ source="
 	30-gpu-firmware.files
 	firmware-xiaomi-raphael.post-install
 	"
-builddir="$srcdir/$pkgname_src"
+builddir="$srcdir/$pkgname_commit"
 
 package() {
 	# parent package is empty
