@@ -17,6 +17,7 @@ deviceinfo_keyboard="false"
 deviceinfo_external_storage="false"
 deviceinfo_screen_width="1080"
 deviceinfo_screen_height="2248"
+deviceinfo_gpu_accelerated="true"
 
 # Bootloader related
 deviceinfo_flash_method="fastboot"
