@@ -2,7 +2,7 @@
 # Maintainer: Newbyte <newbyte@postmarketos.org>
 pkgname=postmarketos-ui-gnome-mobile
 pkgver=2
-pkgrel=5
+pkgrel=6
 pkgdesc="(Wayland) Gnome Shell patched to adapt better to phones (Experimental)"
 url="https://gnome.org/"
 arch="noarch !armhf !riscv64" # gnome-shell / riscv64: mutter-mobile
@@ -26,22 +26,13 @@ depends="
 	networkmanager-elogind
 	pinentry-gnome
 	polkit-gnome
-	postmarketos-base-ui-gnome
+	postmarketos-base-ui-gnome-mobile
 	tracker
 	tracker-miners
 	udisks2
 	"
 _pmb_recommends="
-	calls
-	chatty
 	gnome-extensions-app
-	mobile-config-firefox
-	portfolio
-	postmarketos-default-camera
-	postmarketos-tweaks
-	postmarketos-welcome
-	postprocessd
-	ttyescape
 	"
 subpackages="$pkgname-openrc"
 source="firefox-wayland.sh"

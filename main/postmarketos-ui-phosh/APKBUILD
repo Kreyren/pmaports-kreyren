@@ -2,7 +2,7 @@
 # Maintainer: Newbyte <newbyte@postmarketos.org>
 pkgname=postmarketos-ui-phosh
 pkgver=22.3
-pkgrel=8
+pkgrel=9
 pkgdesc="(Wayland) Mobile UI initially developed for the Librem 5"
 url="https://phosh.mobi"
 arch="noarch !armhf"
@@ -15,23 +15,14 @@ depends="
 	bluez
 	gnome-keyring
 	phosh
-	postmarketos-base-ui-gnome
+	postmarketos-base-ui-gnome-mobile
 	postmarketos-base-ui-qt-tweaks
 	postmarketos-base-ui-qt-wayland
 	udiskie
 	xdg-desktop-portal-wlr
 	"
 _pmb_recommends="
-	calls
-	chatty
-	mobile-config-firefox
 	phosh-mobile-settings
-	portfolio
-	postmarketos-default-camera
-	postmarketos-tweaks
-	postmarketos-welcome
-	postprocessd
-	ttyescape
 	"
 _pmb_groups="feedbackd"
 install="$pkgname.post-install $pkgname.post-upgrade"
