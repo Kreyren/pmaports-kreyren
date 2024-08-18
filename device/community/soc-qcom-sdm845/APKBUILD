@@ -3,7 +3,7 @@
 pkgname=soc-qcom-sdm845
 pkgdesc="Common package for Qualcomm SDM845 devices"
 pkgver=22
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="BSD-3-Clause"
 arch="aarch64"
@@ -108,7 +108,8 @@ vulkan() {
 
 pulseaudio() {
 	install_if="$pkgname=$pkgver-r$pkgrel pulseaudio"
-	replaces="$pkgname" # To migrate from workaround being in main package
+	depends="pipewire-tools" # Provides pw-loopback command used in workaround
+	replaces="$pkgname"      # To migrate from workaround being in main package
 	install="$subpkgname.post-install $subpkgname.post-upgrade"
 
 	# Call Audio idle suspend workaround code
