@@ -3,7 +3,7 @@
 pkgname=device-google-sargo
 pkgdesc="Google Pixel 3a"
 pkgver=6
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -76,6 +76,12 @@ nonfree_firmware() {
 	# The FastRPC service is only enabled when non-free firmware is installed.
 	install -Dm755 "$srcdir"/no-hexagonrpcd-on-suspend.sh \
 		"$subpkgdir"/etc/elogind/system-sleep/no-hexagonrpcd-on-suspend.sh
+}
+
+camera() {
+	install_if="$pkgname=$pkgver-r$pkgrel postmarketos-default-camera"
+	depends="snapshot"
+	mkdir -p "$subpkgdir"
 }
 
 sha512sums="
