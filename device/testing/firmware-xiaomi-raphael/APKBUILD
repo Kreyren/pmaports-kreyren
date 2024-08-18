@@ -1,7 +1,7 @@
 pkgname=firmware-xiaomi-raphael
 pkgver=20240117
 pkgrel=0
-pkgdesc="Firmware for Xiaomi Redmi K20 Pro"
+pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
 arch="aarch64"
 _carch="arm64"
 subpackages="

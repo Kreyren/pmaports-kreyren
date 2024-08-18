@@ -1,6 +1,6 @@
 # Reference: <https://postmarketos.org/devicepkg>
 pkgname=device-xiaomi-raphael
-pkgdesc="Xiaomi Redmi K20 Pro"
+pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=1
 pkgrel=0
 url="https://postmarketos.org"
