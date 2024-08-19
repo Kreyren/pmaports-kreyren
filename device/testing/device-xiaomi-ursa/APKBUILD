@@ -1,0 +1,30 @@
+# Maintainer: KREYREN <kreyren@fsfe.org>
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-xiaomi-ursa
+pkgdesc="xiaomi Xiaomi Mi 8 Explorer Edition"
+pkgver=1
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	linux-postmarketos-qcom-ursa
+	mkbootimg
+	postmarketos-base
+	soc-qcom-sdm845
+"
+makedepends="devicepkg-dev"
+source="deviceinfo"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+56979c78bcd9358c2f437ea426d61b7cdb88eead92b111df3a72b11d199e446e595f9cb8e2ecedda5df67befeab72f0497308da0e7c053854dd13909c4fde318  deviceinfo
+"
