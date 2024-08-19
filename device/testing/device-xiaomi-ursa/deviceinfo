@@ -10,19 +10,28 @@ deviceinfo_year="2018"
 deviceinfo_dtb="qcom/sdm845-xiaomi-ursa"
 deviceinfo_arch="aarch64"
 device_info_append_dtb="true"
+deviceinfo_flash_kernel_on_update="true"
 
 # Device related
+deviceinfo_gpu_accelerated="true"
 deviceinfo_chassis="handset"
 deviceinfo_keyboard="false"
 deviceinfo_external_storage="false"
 deviceinfo_screen_width="1080"
 deviceinfo_screen_height="2248"
-deviceinfo_gpu_accelerated="true"
+deviceinfo_rootfs_image_sector_size="4096"
 
 # Bootloader related
-deviceinfo_flash_method="fastboot"
-
+deviceinfo_flash_method="fastboot-bootpart"
+# Where to flash boot.img, or in our case where to flash the pmOS boot partition.
+# This is a bit confusing.
+deviceinfo_flash_fastboot_partition_kernel="system"
+deviceinfo_flash_fastboot_partition_system="userdata"
+# FIXME: Console enabled to workaround a race condition with display initialisation
+# See https://gitlab.freedesktop.org/drm/msm/-/issues/46
+deviceinfo_kernel_cmdline="console=ttyMSM0,115200"
 deviceinfo_generate_bootimg="true"
+deviceinfo_generate_systemd_boot="true"
 deviceinfo_bootimg_qcdt="false"
 deviceinfo_bootimg_mtk_mkimage="false"
 deviceinfo_bootimg_dtb_second="false"
@@ -32,7 +41,7 @@ deviceinfo_flash_offset_ramdisk="0x01000000"
 deviceinfo_flash_offset_second="0x00000000"
 deviceinfo_flash_offset_tags="0x00000100"
 deviceinfo_flash_pagesize="4096"
+deviceinfo_flash_sparse="true"
+deviceinfo_initfs_compression="zstd:fast"
 
-#deviceinfo_kernel_cmdline=""
-#deviceinfo_mtk_label_kernel=""
-#deviceinfo_mtk_label_ramdisk=""
+# osk-sdl

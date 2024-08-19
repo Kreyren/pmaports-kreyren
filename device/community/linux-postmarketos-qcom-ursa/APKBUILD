@@ -6,9 +6,9 @@
 _flavor="postmarketos-qcom-ursa"
 pkgname=linux-$_flavor
 # FIXME(Krey): Should have `-rc2`
-	pkgver=6.11.0
+pkgver="6.11.0"
 pkgrel=0
-pkgdesc="Mainline Kernel fork for SDM845 devices"
+pkgdesc="Mainline Kernel fork for SDM845 devices for xiaomi-ursa"
 arch="aarch64"
 _carch="arm64"
 url="https://github.com/Kreyren/linux"
@@ -19,14 +19,16 @@ options="!check !tracedeps
 makedepends="bash bison findutils flex installkernel openssl-dev perl zstd python3 linux-headers"
 
 _config="config-$_flavor.$arch"
-_tag="add-xiaomi-ursa"
+_commit="43f8f14a2784fa77998dbe0aecf634c5102f6045"
+_srcname="linux-$pkgver-${_commit:0:7}"
 
 # Source
 source="
-	linux-$_tag.tar.gz::https://github.com/Kreyren/linux/archive/refs/heads/add-xiaomi-ursa.tar.gz
+	$_srcname.tar.gz::https://github.com/Kreyren/linux/archive/$_commit.tar.gz
 	$_config
 "
-builddir="$srcdir/linux-$_tag"
+
+builddir="$srcdir/linux-$_commit"
 
 prepare() {
 	default_prepare
@@ -40,6 +42,7 @@ build() {
 }
 
 package() {
+	# Pending https://gitlab.com/postmarketOS/pmaports/-/merge_requests/5369
 	if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
 		# ZBOOT EFI decompressor for EFI booting
 		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
@@ -54,16 +57,27 @@ package() {
 			"$pkgdir/boot/vmlinuz"
 	fi
 
-	make modules_install dtbs_install \
+	mkdir -p "$pkgdir"/boot/dtbs-tmp
+
+	# make modules_install zinstall dtbs_install \
+	# 	ARCH="$_carch" \
+	# 	INSTALL_PATH="$pkgdir"/boot/ \
+	# 	INSTALL_MOD_PATH="$pkgdir" \
+	# 	INSTALL_MOD_STRIP=1 \
+	# 	INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-tmp
+
+	mkdir -p "$pkgdir"/boot/dtbs/qcom
+
+	# Krey: fuck it, just flood the boot with bunch of dtbs the tmp way is not working an i am loosing my fucking mind and fuck i should have been a painter instead of a programmer
+	make modules_install zinstall dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-tmp
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	mkdir -p "$pkgdir"/boot/dtbs/qcom
-	cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sdm8* "$pkgdir"/boot/dtbs/qcom
-	rm -rf "$pkgdir"/boot/dtbs-tmp
+	# cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sdm8* "$pkgdir"/boot/dtbs/qcom
+	# rm -rf "$pkgdir"/boot/dtbs-tmp
 
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
@@ -72,6 +86,6 @@ package() {
 }
 
 sha512sums="
-4dc5c3809a6b76f9dd9971d5ca74e72494ff29de721d4e4dcf9eba8ec0e3f6e3655413eaa16f97192dabc292b0f37bcb1494b6dc4a437055b7caee8e358bfbc8  linux-add-xiaomi-ursa.tar.gz
-cce012cbfb383d1acc6fb64994cabf0cb7bd6a2c9956d5d8047e85ec653c1bb6b5567f11930fb9f1c967609d698801160b64781ae9b265f48a8acf9474b7d027  config-postmarketos-qcom-ursa.aarch64
+3bb52776aaf290b41d2a6f708f88de2928834ab8d57aa4e7d8466b4cab16b7665ef5a778efc90892405958da04135a1b7ac1a9ac40162e1f81c5969d6562634a  linux-6.11.0-43f8f14.tar.gz
+6a80cffb4fba2af7e39db904399b56d37f8fa94d7f608395154cdbc3abad2608453a6288dc422bffbbe31c3b43eaaa133d899f67da322fd60a794025dd9d7e33  config-postmarketos-qcom-ursa.aarch64
 "

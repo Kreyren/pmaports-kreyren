@@ -9,10 +9,11 @@ license="MIT"
 arch="aarch64"
 options="!check !archcheck"
 depends="
+	postmarketos-base
 	linux-postmarketos-qcom-ursa
 	mkbootimg
-	postmarketos-base
 	soc-qcom-sdm845
+	soc-qcom-sdm845-ucm
 "
 makedepends="devicepkg-dev"
 source="deviceinfo"
@@ -26,5 +27,5 @@ package() {
 }
 
 sha512sums="
-56979c78bcd9358c2f437ea426d61b7cdb88eead92b111df3a72b11d199e446e595f9cb8e2ecedda5df67befeab72f0497308da0e7c053854dd13909c4fde318  deviceinfo
+b21cb3fe533e22b22519bdee015c61256220736e659c6c427541bcf22706068143c76afaba32c31eb97555fa6f8502be98bfe5dd1aa965e108ff1d2e424a39d8  deviceinfo
 "
