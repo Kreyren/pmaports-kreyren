@@ -1,0 +1,83 @@
+# Maintainer: Caleb Connolly <caleb@connolly.tech>
+# Co-Maintainer: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+# Stable Linux kernel with patches for SDM845 devices
+# Kernel config based on: arch/arm64/configs/defconfig and sdm845.config
+
+set -x # Debug Mode Activate!
+
+_flavor="postmarketos-qcom-ursa"
+pkgname=linux-$_flavor
+# FIXME(Krey): Should have `-rc2`
+pkgver="6.11.0"
+pkgrel=0
+pkgdesc="Mainline Kernel fork for SDM845 devices for xiaomi-ursa"
+arch="aarch64"
+_carch="arm64"
+url="https://github.com/Kreyren/linux"
+license="GPL-2.0-only"
+options="!check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-community"
+makedepends="bash bison findutils flex installkernel openssl-dev perl zstd python3 linux-headers"
+
+_config="config-$_flavor.$arch"
+_commit="44506ae5fff187cab5b931a0b2c156c0e3f17c5b"
+_srcname="linux-$pkgver-${_commit:0:7}"
+
+# Source
+source="
+	$_srcname.tar.gz::https://github.com/Kreyren/linux/archive/$_commit.tar.gz
+	$_config
+"
+
+builddir="$srcdir/linux-$_commit"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-$_flavor"
+}
+
+package() {
+	# Pending https://gitlab.com/postmarketOS/pmaports/-/merge_requests/5369
+	if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
+		# ZBOOT EFI decompressor for EFI booting
+		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
+			"$pkgdir/boot/linux.efi"
+
+		# Old GZIP'd kernel image for boot.img compatibility
+		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
+			"$pkgdir/boot/vmlinuz"
+	else
+		echo "WARNING: CONFIG_ZBOOT not enabled!"
+		install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
+			"$pkgdir/boot/vmlinuz"
+	fi
+
+	make modules_install zinstall dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot/ \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
+
+	# mkdir -p "$pkgdir"/boot/dtbs/qcom
+	# cp -vr "$pkgdir"/boot/dtbs-tmp/qcom/sdm8* "$pkgdir"/boot/dtbs/qcom
+	# rm -rf "$pkgdir"/boot/dtbs-tmp
+
+	# WTF
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+05b4f3f21c8e7d78bcee0bf6b84126327543b17c1e901f452e3fad39729ec9a20c5605f9c28d0919078fc38fe8a07ae8ba7c60362906e41efa9fe04b703b92f9  linux-6.11.0-44506ae.tar.gz
+6a80cffb4fba2af7e39db904399b56d37f8fa94d7f608395154cdbc3abad2608453a6288dc422bffbbe31c3b43eaaa133d899f67da322fd60a794025dd9d7e33  config-postmarketos-qcom-ursa.aarch64
+"
