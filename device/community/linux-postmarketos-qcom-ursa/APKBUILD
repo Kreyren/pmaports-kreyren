@@ -3,6 +3,8 @@
 # Stable Linux kernel with patches for SDM845 devices
 # Kernel config based on: arch/arm64/configs/defconfig and sdm845.config
 
+set -x # Debug Mode Activate!
+
 _flavor="postmarketos-qcom-ursa"
 pkgname=linux-$_flavor
 # FIXME(Krey): Should have `-rc2`
@@ -19,7 +21,7 @@ options="!check !tracedeps
 makedepends="bash bison findutils flex installkernel openssl-dev perl zstd python3 linux-headers"
 
 _config="config-$_flavor.$arch"
-_commit="43f8f14a2784fa77998dbe0aecf634c5102f6045"
+_commit="44506ae5fff187cab5b931a0b2c156c0e3f17c5b"
 _srcname="linux-$pkgver-${_commit:0:7}"
 
 # Source
@@ -57,18 +59,6 @@ package() {
 			"$pkgdir/boot/vmlinuz"
 	fi
 
-	mkdir -p "$pkgdir"/boot/dtbs-tmp
-
-	# make modules_install zinstall dtbs_install \
-	# 	ARCH="$_carch" \
-	# 	INSTALL_PATH="$pkgdir"/boot/ \
-	# 	INSTALL_MOD_PATH="$pkgdir" \
-	# 	INSTALL_MOD_STRIP=1 \
-	# 	INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-tmp
-
-	mkdir -p "$pkgdir"/boot/dtbs/qcom
-
-	# Krey: fuck it, just flood the boot with bunch of dtbs the tmp way is not working an i am loosing my fucking mind and fuck i should have been a painter instead of a programmer
 	make modules_install zinstall dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
@@ -76,9 +66,11 @@ package() {
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	# cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sdm8* "$pkgdir"/boot/dtbs/qcom
+	# mkdir -p "$pkgdir"/boot/dtbs/qcom
+	# cp -vr "$pkgdir"/boot/dtbs-tmp/qcom/sdm8* "$pkgdir"/boot/dtbs/qcom
 	# rm -rf "$pkgdir"/boot/dtbs-tmp
 
+	# WTF
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
@@ -86,6 +78,6 @@ package() {
 }
 
 sha512sums="
-3bb52776aaf290b41d2a6f708f88de2928834ab8d57aa4e7d8466b4cab16b7665ef5a778efc90892405958da04135a1b7ac1a9ac40162e1f81c5969d6562634a  linux-6.11.0-43f8f14.tar.gz
+05b4f3f21c8e7d78bcee0bf6b84126327543b17c1e901f452e3fad39729ec9a20c5605f9c28d0919078fc38fe8a07ae8ba7c60362906e41efa9fe04b703b92f9  linux-6.11.0-44506ae.tar.gz
 6a80cffb4fba2af7e39db904399b56d37f8fa94d7f608395154cdbc3abad2608453a6288dc422bffbbe31c3b43eaaa133d899f67da322fd60a794025dd9d7e33  config-postmarketos-qcom-ursa.aarch64
 "
